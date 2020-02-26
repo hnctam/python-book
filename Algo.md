@@ -325,28 +325,93 @@ public void fillWater(char[][] grid, int i, int j){
 ```Java
 ```
 
-## Number of Islands
+## Kth Largest Element in an Array
 
 ```text
+Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+Example 1:
+
+Input: [3,2,1,5,6,4] and k = 2
+Output: 5
+Example 2:
+
+Input: [3,2,3,1,2,4,5,5,6] and k = 4
+Output: 4
+Note:
+You may assume k is always valid, 1 ≤ k ≤ array's length.
 ```
 
 ```Java
+public int findKthLargest(int[] nums, int k) {
+    Arrays.sort(nums);
+    int len = nums.length;
+    int j = 1;
+    for (int i = 0; i < len; i++) {
+        if (j == k) return nums[len - i - 1];
+        else j++;
+    }
+    return -1;
+}
 ```
 
-## Number of Islands
+## Find the second largest number is an array
 
 ```text
+Find the second largest number is an array
 ```
 
 ```Java
+int find2ndLatestElement(int arr[]) {
+    if (null == arr || arr.length < 2) {
+        return Integer.MIN_VALUE;
+    }
+
+    int firstVal = Integer.MIN_VALUE;
+    int secondVal = Integer.MIN_VALUE;
+    for (int index = 0; index < arr.length; index++) {
+        int currentVal = arr[index];
+        if (currentVal > firstVal) {
+            secondVal = firstVal;
+            firstVal = currentVal;
+        } else if (currentVal > secondVal && currentVal != firstVal) {
+            secondVal = currentVal;
+        }
+    }
+    return secondVal;
+}
 ```
 
-## Number of Islands
+## Two Sum
 
 ```text
+Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+Example:
+
+Given nums = [2, 7, 11, 15], target = 9,
+
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
 ```
 
 ```Java
+public int[] twoSum(int[] nums, int target) {
+    Map<Integer, Integer> map = new HashMap();
+    for (int i = 0; i < nums.length; i++) {
+        int a = nums[i];
+        // note that the numbers in the array can be negative as well
+        if (map.get(target-a) != null) {
+            return new int[]{map.get(target-a), i};
+        }
+        // The following should be after the check above,
+        // otherwise it will fail for the case where target = 6 and there's a 3 in the original array.
+        map.put (a, i);
+    }
+    return null;
+}
 ```
 
 ## Number of Islands
