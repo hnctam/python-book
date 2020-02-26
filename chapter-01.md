@@ -15,7 +15,7 @@ Python là ngôn ngữ lập trình dễ học, có một số các tính năng 
 
 Một là mô-đun rùa, lấy cảm hứng từ đồ họa Rùa (được sử dụng bởi Ngôn ngữ lập trình logo trở lại vào những năm 1960) và được thiết kế cho giáo dục. Một cái khác là mô-đun tkinter, một giao diện cho Bộ công cụ Tk GUI, cung cấp một cách đơn giản để tạo chương trình với đồ họa và hình ảnh động cao cấp hơn một chút.
 
-### Cài Đặt Python
+### Cài đặt Python
 
 Cài đặt Python khá đơn giản. Ở đây, chúng ta sẽ đi qua các bước để cài đặt nó trên Windows 7.
 Khi cài đặt Python, bạn cũng sẽ thiết lập một đường link cho trình soạn thảo, đó là Môi trường DeveLopment tích hợp cho phép bạn viết chương trình cho Python.
@@ -23,3 +23,10 @@ Khi cài đặt Python, bạn cũng sẽ thiết lập một đường link cho 
 Để cài đặt Python cho Microsoft Windows 7, hãy trỏ trình duyệt web tới https://www.python.org/downloads/ và tải xuống trình cài đặt Windows mới nhất cho Python 3. Tìm kiếm một phần trong menu có tiêu đề Liên kết nhanh, như được hiển thị ở đây:
 
 ![Download Python](images/1-python-install.png)
+
+### Cài đặt trình soạn thảo
+
+Chúng ta sẽ sử dụng Visual Code để soạn thảo Python.
+Liên kết sau để tải Visual Code [Visual Code](https://code.visualstudio.com/).
+
+![Visual Code](images/2-visual-code.png)
