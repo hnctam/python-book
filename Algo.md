@@ -556,3 +556,148 @@ void combine(int[] candidates, int i, List<Integer> list, int sum, int target) {
     }
 }
 ```
+
+##
+
+```txt
+Given a binary tree, determine if it is a valid binary search tree (BST).
+
+Assume a BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+
+Example 1:
+
+    2
+   / \
+  1   3
+
+Input: [2,1,3]
+Output: true
+
+Example 2:
+
+    5
+   / \
+  1   4
+     / \
+    3   6
+
+Input: [5,1,4,null,null,3,6]
+Output: false
+Explanation: The root node's value is 5 but its right child's value is 4.
+```
+
+```Java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public boolean isValidBST(TreeNode root) {
+    if(root == null)
+        return true;
+
+    return isValidBST(root.left, - Double.MAX_VALUE, root.val) && isValidBST(root.right, root.val, Double.MAX_VALUE);
+}
+
+private boolean isValidBST(TreeNode node, double min, double max)
+{
+    if(node == null)
+        return true;
+
+    if(node.val <= min || node.val >= max)
+        return false;
+
+    return isValidBST(node.left, min, node.val) && isValidBST(node.right, node.val, max);
+}
+```
+
+## Coin Change
+
+```txt
+N = 12
+Index of Array of Coins:    [0, 1,  2]
+Array of coins:             [1, 5, 10]
+
+Comparing 10 cents to each of the index
+and making that same comparison, if the
+value of the coin is smaller than the value of the
+index at the ways array then
+ways[j-coins[i]]+ways[j] is the new value of ways[j].
+Thus we get the following.
+
+
+Index of Array of ways:    [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11,  12]
+Array of  ways:            [1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  4,   4,    4]
+
+So the answer to our example is ways[12] which is 4.
+```
+
+```Java
+static long getNumberOfWays(long N, long[] Coins) {
+    // Create the ways array to 1 plus the amount
+    // to stop overflow
+    long[] ways = new long[(int)N + 1];
+
+    // Set the first way to 1 because its 0 and
+    // there is 1 way to make 0 with 0 coins
+    ways[0] = 1;
+
+    // Go through all of the coins
+    for (int i = 0; i < Coins.length; i++) {
+        // Make a comparison to each index value
+        // of ways with the coin value.
+        for (int j = 0; j < ways.length; j++) {
+            if (Coins[i] <= j) {
+                // Update the ways array
+                ways[j] += ways[(int)(j - Coins[i])];
+            }
+        }
+    }
+
+    // return the value at the Nth position
+    // of the ways array.
+    return ways[(int)N];
+}
+```
+
+## Stair Case
+
+```txt
+Count ways to reach the n’th stair
+There are n stairs, a person standing at the bottom wants to reach the top. The person can climb either 1 stair or 2 stairs at a time. Count the number of ways, the person can reach the top.
+```
+
+![alt](https://media.geeksforgeeks.org/wp-content/uploads/nth-stair.png)
+
+```Java
+static int fib(int n) {
+    if (n <= 1)
+        return n;
+    return fib(n-1) + fib(n-2);
+}
+
+// Returns number of ways to reach s'th stair
+static int countWays(int s) {
+    return fib(s + 1);
+}
+
+// Dynamic Programming
+static int countWaysUtil(int n, int m) {
+    int res[] = new int[n];
+    res[0] = 1; res[1] = 1;
+    for (int i=2; i<n; i++) {
+        res[i] = 0;
+        for (int j=1; j<=m && j<=i; j++)
+            res[i] += res[i-j];
+    }
+    return res[n-1];
+}
+```
