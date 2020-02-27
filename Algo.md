@@ -175,39 +175,20 @@ Note:
 ```
 
 ```Java
-```
+public List<List<String>> groupAnagrams(String[] strs) {
+    HashMap<String, List<String>> map = new HashMap<String, List<String>>();
 
-## Longest Palindromic Substring
+    for (String st : strs) {
+        char[] ar = st.toCharArray();
+        Arrays.sort(ar);
+        String key = String.valueOf(ar);
 
-```text
-Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
-```
-
-```Java
-public String longestPalindrome(String s) {
-    if (s == null || s.length() < 1) {
-        return "";
+        List<String> l = map.getOrDefault(key, new ArrayList<>());
+        l.add(st);
+        map.put(key, l);
     }
-    int start = 0, end = 0;
-    for (int i = 0; i < s.length(); i++) {
-        int len1 = expandAroundCenter(s, i, i);
-        int len2 = expandAroundCenter(s, i, i + 1);
-        int len = Math.max(len1, len2);
-        if (len > end - start) {
-            start = i - (len - 1) / 2;
-            end = i + len / 2;
-        }
-    }
-    return s.substring(start, end + 1);
-}
 
-private int expandAroundCenter(String s, int left, int right) {
-    int i = left, j = right;
-    while (i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)) {
-        i--;
-        j++;
-    }
-    return j - i - 1;
+    return new ArrayList<>(map.values());
 }
 ```
 
@@ -270,6 +251,42 @@ boolean isPalindrome(int x) {
 }
 ```
 
+## Longest Palindromic Substring
+
+```text
+Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+```
+
+```Java
+public String longestPalindrome(String s) {
+    if (s == null || s.length() < 1) {
+        return "";
+    }
+    int start = 0, end = 0;
+    for (int i = 0; i < s.length(); i++) {
+        int len1 = expandAroundCenter(s, i, i);
+        int len2 = expandAroundCenter(s, i, i + 1);
+        int len = Math.max(len1, len2);
+        if (len > end - start) {
+            start = i - (len - 1) / 2;
+            end = i + len / 2;
+        }
+    }
+    return s.substring(start, end + 1);
+}
+
+private int expandAroundCenter(String s, int left, int right) {
+    int i = left, j = right;
+    while (i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)) {
+        i--;
+        j++;
+    }
+    return j - i - 1;
+}
+```
+
+
+
 ## Number of Islands
 
 ```text
@@ -320,9 +337,27 @@ public void fillWater(char[][] grid, int i, int j){
 ## Find the pair of integers in an array whose sum is x.
 
 ```text
+Find the pair of integers in an array whose sum is x
 ```
 
 ```Java
+boolean hasArrayTwoCandidates(int A[], int arr_size, int x) {
+    int l, r;
+    /* Sort the elements */
+    Arrays.sort(A);
+    /* Now look for the two candidates in the sorted array*/
+    l = 0;
+    r = arr_size - 1;
+    while (l < r) {
+        if (A[l] + A[r] == x)
+            return true;
+        else if (A[l] + A[r] < x)
+            l++;
+        else // A[i] + A[j] > x
+            r--;
+    }
+    return false;
+}
 ```
 
 ## Kth Largest Element in an Array
@@ -414,18 +449,110 @@ public int[] twoSum(int[] nums, int target) {
 }
 ```
 
-## Number of Islands
+## 3Sum
 
 ```text
+Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+
+Note:
+
+The solution set must not contain duplicate triplets.
+
+Example:
+
+Given array nums = [-1, 0, 1, 2, -1, -4],
+
+A solution set is:
+[
+  [-1, 0, 1],
+  [-1, -1, 2]
+]
 ```
 
 ```Java
+public List<List<Integer>> threeSum(int[] nums) {
+    List<List<Integer>> result = new ArrayList<List<Integer>>();
+    Arrays.sort(nums);
+    for (int i = 0; i < nums.length-2; i++) {
+        if(i == 0 || (i > 0 && nums[i]!= nums[i-1])) {
+            int low = i + 1;
+            int high = nums.length - 1;
+            while(low < high) {
+                int curr = nums[i] + nums[low] + nums[high];
+                if(curr > 0) {
+                    high--;
+                } else if(curr < 0) {
+                    low++;
+                } else{
+                    List<Integer> ans = new ArrayList<Integer>();
+                    ans.add(nums[i]);
+                    ans.add(nums[low]);
+                    ans.add(nums[high]);
+                    result.add(ans);
+                    while(low < high && nums[high] == nums[high-1]) high--;
+                    while(low < high && nums[low] == nums[low+1]) low++;
+                    high--;
+                    low++;
+                }
+            }
+        }
+    }
+    return result;
+}
 ```
 
-## Number of Islands
+## Combination Sum
 
 ```text
+Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+
+The same repeated number may be chosen from candidates unlimited number of times.
+
+Note:
+
+All numbers (including target) will be positive integers.
+The solution set must not contain duplicate combinations.
+Example 1:
+
+Input: candidates = [2,3,6,7], target = 7,
+A solution set is:
+[
+  [7],
+  [2,2,3]
+]
+Example 2:
+
+Input: candidates = [2,3,5], target = 8,
+A solution set is:
+[
+  [2,2,2,2],
+  [2,3,3],
+  [3,5]
+]
 ```
 
 ```Java
+List<List<Integer>> res = new ArrayList<>();
+public List<List<Integer>> combinationSum(int[] candidates, int target) {
+    Arrays.sort(candidates);
+    combine(candidates, 0, new ArrayList<Integer>(), 0, target);
+    return res;
+}
+
+void combine(int[] candidates, int i, List<Integer> list, int sum, int target) {
+    if (sum == target) {
+        res.add(new ArrayList(list));
+        return;
+    }
+    // add candidates[i]
+    if (sum + candidates[i] <= target) {
+        list.add(candidates[i]);
+        combine(candidates, i, list, sum + candidates[i], target);
+        list.remove(list.size() - 1);
+    }
+    // ignore candidates[i]
+    if (i+1 < candidates.length && sum + candidates[i+1] <= target) {
+        combine(candidates, i+1, list, sum, target);
+    }
+}
 ```
