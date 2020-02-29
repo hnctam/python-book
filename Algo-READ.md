@@ -1,22 +1,8 @@
 # Algorithm Review
 
 ## Permutation
-```text
-Input: [1,2,3]
-Output:
-[
-  [1,2,3],
-  [1,3,2],
-  [2,1,3],
-  [2,3,1],
-  [3,1,2],
-  [3,2,1]
-]
-```
-
 ```Java
 List<List<Integer>> res = new ArrayList<>();
-
 public List<List<Integer>> permute(int[] nums) {
     backtrack(nums, new ArrayList<Integer>());
     return res;
@@ -37,7 +23,6 @@ public void backtrack(int[] nums, List<Integer> al) {
     }
 }
 ```
-
 ```Java
 private static List<String> permute(String str) {
         StringBuilder chars = new StringBuilder(str);
@@ -45,7 +30,6 @@ private static List<String> permute(String str) {
         permuteHelper(chars, new LinkedHashSet<>(), results);
         return results;
     }
-
     private static void permuteHelper(StringBuilder chars, Set<Character> permute, List<String> results) {
         if (permute.size() == chars.length()) {
             final StringBuilder sb = new StringBuilder();
@@ -55,7 +39,6 @@ private static List<String> permute(String str) {
             results.add(sb.toString());
             return;
         }
-
         for (int index = 0; index < chars.length(); index++) {
             char val = chars.charAt(index);
             if (!permute.contains(val)) {
@@ -66,19 +49,7 @@ private static List<String> permute(String str) {
         }
     }
 ```
-
 ## Next Permutation
-
-> Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.
-> If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).
-> The replacement must be in-place and use only constant extra memory.
-Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.
-
-```
-1,2,3 → 1,3,2
-3,2,1 → 1,2,3
-1,1,5 → 1,5,1
-```
 
 ```Java
 public void nextPermutation(int[] nums) {
@@ -109,30 +80,6 @@ public void nextPermutation(int[] nums) {
 
 ## Combination Sum
 
-```text
-Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
-The same repeated number may be chosen from candidates unlimited number of times.
-Note:
-•	All numbers (including target) will be positive integers.
-•	The solution set must not contain duplicate combinations.
-
-Example 1:
-Input: candidates = [2,3,6,7], target = 7,
-A solution set is:
-[
-  [7],
-  [2,2,3]
-]
-Example 2:
-Input: candidates = [2,3,5], target = 8,
-A solution set is:
-[
-  [2,2,2,2],
-  [2,3,3],
-  [3,5]
-]
-```
-
 ```Java
 public List<List<Integer>> combinationSum(int[] candidates, int target) {
     List<List<Integer>> res = new ArrayList<>();
@@ -159,21 +106,6 @@ public void backtrack(List<List<Integer>> res, int[] nums, int target, List<Inte
 
 ## Group Anagrams
 
-```text
-Given an array of strings, group anagrams together.
-Example:
-Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
-Output:
-[
-  ["ate","eat","tea"],
-  ["nat","tan"],
-  ["bat"]
-]
-Note:
-•	All inputs will be in lowercase.
-•	The order of your output does not matter.
-```
-
 ```Java
 public List<List<String>> groupAnagrams(String[] strs) {
     HashMap<String, List<String>> map = new HashMap<String, List<String>>();
@@ -193,12 +125,6 @@ public List<List<String>> groupAnagrams(String[] strs) {
 ```
 
 ## Valid Palindrome
-
-```
-Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
-
-Note: For the purpose of this problem, we define empty string as valid palindrome.
-```
 
 ```Java
 boolean isPalindrome(String s) {
@@ -226,10 +152,6 @@ boolean isPalindrome(String s) {
 
 ## Palindrome Number
 
-```text
-Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.
-```
-
 ```Java
 boolean isPalindrome(int x) {
     if (x == 0) {
@@ -252,10 +174,6 @@ boolean isPalindrome(int x) {
 ```
 
 ## Longest Palindromic Substring
-
-```text
-Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
-```
 
 ```Java
 public String longestPalindrome(String s) {
@@ -284,8 +202,6 @@ private int expandAroundCenter(String s, int left, int right) {
     return j - i - 1;
 }
 ```
-
-
 
 ## Longest substring without repeating characters
 
@@ -386,25 +302,6 @@ int myAtoi(String str) {
 
 ## Number of Islands
 
-```text
-Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
-Example 1:
-Input:
-11110
-11010
-11000
-00000
-Output: 1
-Example 2:
-Input:
-11000
-11000
-00100
-00011
-
-Output: 3
-
-```
 ```Java
 public int numIslands(char[][] grid) {
     int countOfIsland = 0;
@@ -433,9 +330,6 @@ public void fillWater(char[][] grid, int i, int j){
 
 ## Find the pair of integers in an array whose sum is x.
 
-```text
-Find the pair of integers in an array whose sum is x
-```
 
 ```Java
 boolean hasArrayTwoCandidates(int A[], int arr_size, int x) {
@@ -459,21 +353,6 @@ boolean hasArrayTwoCandidates(int A[], int arr_size, int x) {
 
 ## Kth Largest Element in an Array
 
-```text
-Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
-
-Example 1:
-
-Input: [3,2,1,5,6,4] and k = 2
-Output: 5
-Example 2:
-
-Input: [3,2,3,1,2,4,5,5,6] and k = 4
-Output: 4
-Note:
-You may assume k is always valid, 1 ≤ k ≤ array's length.
-```
-
 ```Java
 public int findKthLargest(int[] nums, int k) {
     Arrays.sort(nums);
@@ -488,10 +367,6 @@ public int findKthLargest(int[] nums, int k) {
 ```
 
 ## Find the second largest number is an array
-
-```text
-Find the second largest number is an array
-```
 
 ```Java
 int find2ndLatestElement(int arr[]) {
@@ -516,19 +391,6 @@ int find2ndLatestElement(int arr[]) {
 
 ## Two Sum
 
-```text
-Given an array of integers, return indices of the two numbers such that they add up to a specific target.
-
-You may assume that each input would have exactly one solution, and you may not use the same element twice.
-
-Example:
-
-Given nums = [2, 7, 11, 15], target = 9,
-
-Because nums[0] + nums[1] = 2 + 7 = 9,
-return [0, 1].
-```
-
 ```Java
 public int[] twoSum(int[] nums, int target) {
     Map<Integer, Integer> map = new HashMap();
@@ -547,24 +409,6 @@ public int[] twoSum(int[] nums, int target) {
 ```
 
 ## 3Sum
-
-```text
-Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
-
-Note:
-
-The solution set must not contain duplicate triplets.
-
-Example:
-
-Given array nums = [-1, 0, 1, 2, -1, -4],
-
-A solution set is:
-[
-  [-1, 0, 1],
-  [-1, -1, 2]
-]
-```
 
 ```Java
 public List<List<Integer>> threeSum(int[] nums) {
@@ -597,8 +441,6 @@ public List<List<Integer>> threeSum(int[] nums) {
     return result;
 }
 ```
-
-
 
 ## 3Sum Closest
 
@@ -639,34 +481,6 @@ int threeSumClosest(int[] nums, int target) {
 ```
 
 ## Combination Sum
-
-```text
-Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
-
-The same repeated number may be chosen from candidates unlimited number of times.
-
-Note:
-
-All numbers (including target) will be positive integers.
-The solution set must not contain duplicate combinations.
-Example 1:
-
-Input: candidates = [2,3,6,7], target = 7,
-A solution set is:
-[
-  [7],
-  [2,2,3]
-]
-Example 2:
-
-Input: candidates = [2,3,5], target = 8,
-A solution set is:
-[
-  [2,2,2,2],
-  [2,3,3],
-  [3,5]
-]
-```
 
 ```Java
 List<List<Integer>> res = new ArrayList<>();
@@ -733,37 +547,6 @@ public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
 ## Valid BST
 
-```txt
-Given a binary tree, determine if it is a valid binary search tree (BST).
-
-Assume a BST is defined as follows:
-
-The left subtree of a node contains only nodes with keys less than the node's key.
-The right subtree of a node contains only nodes with keys greater than the node's key.
-Both the left and right subtrees must also be binary search trees.
-
-Example 1:
-
-    2
-   / \
-  1   3
-
-Input: [2,1,3]
-Output: true
-
-Example 2:
-
-    5
-   / \
-  1   4
-     / \
-    3   6
-
-Input: [5,1,4,null,null,3,6]
-Output: false
-Explanation: The root node's value is 5 but its right child's value is 4.
-```
-
 ```Java
 /**
  * Definition for a binary tree node.
@@ -795,25 +578,6 @@ private boolean isValidBST(TreeNode node, double min, double max)
 
 ## Coin Change
 
-```txt
-N = 12
-Index of Array of Coins:    [0, 1,  2]
-Array of coins:             [1, 5, 10]
-
-Comparing 10 cents to each of the index
-and making that same comparison, if the
-value of the coin is smaller than the value of the
-index at the ways array then
-ways[j-coins[i]]+ways[j] is the new value of ways[j].
-Thus we get the following.
-
-
-Index of Array of ways:    [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11,  12]
-Array of  ways:            [1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  4,   4,    4]
-
-So the answer to our example is ways[12] which is 4.
-```
-
 ```Java
 static long getNumberOfWays(long N, long[] Coins) {
     // Create the ways array to 1 plus the amount
@@ -843,13 +607,6 @@ static long getNumberOfWays(long N, long[] Coins) {
 ```
 
 ## Stair Case
-
-```txt
-Count ways to reach the n’th stair
-There are n stairs, a person standing at the bottom wants to reach the top. The person can climb either 1 stair or 2 stairs at a time. Count the number of ways, the person can reach the top.
-```
-
-![alt](https://media.geeksforgeeks.org/wp-content/uploads/nth-stair.png)
 
 ```Java
 static int fib(int n) {
