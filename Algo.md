@@ -875,3 +875,129 @@ static int countWaysUtil(int n, int m) {
     return res[n-1];
 }
 ```
+
+## Decode String
+
+```txt
+Given an encoded string, return its decoded string.
+
+The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+
+You may assume that the input string is always valid; No extra white spaces, square brackets are well-formed, etc.
+
+Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there won't be input like 3a or 2[4].
+
+Examples:
+
+s = "3[a]2[bc]", return "aaabcbc".
+s = "3[a2[c]]", return "accaccacc".
+s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
+```
+
+```java
+public String decodeString(String s) {
+    StringBuilder sb = new StringBuilder();
+    dfs(s, 0, sb, 0);
+    return sb.toString();
+}
+
+int dfs(String s, int idx, StringBuilder sb, int num) {
+    if (idx == s.length()) {
+        return idx;
+    }
+    char c = s.charAt(idx);
+    if (Character.isDigit(c)) {
+        num = 10 * num + (c - '0');
+        return dfs(s, idx + 1, sb, num);
+    } else if (c == '[') {
+        StringBuilder nestedSb = new StringBuilder();
+        int nextIdx = dfs(s, idx + 1, nestedSb, 0);
+        String nested = nestedSb.toString();
+        while (num-- > 0) {
+            sb.append(nested);
+        }
+        return dfs(s, nextIdx + 1, sb, 0);
+    } else if (s.charAt(idx) == ']') {
+        return idx;
+    } else {
+        sb.append(c);
+        return dfs(s, idx + 1, sb, 0);
+    }
+}
+```
+
+## Decoded String at Index
+
+```txt
+An encoded string S is given.  To find and write the decoded string to a tape, the encoded string is read one character at a time and the following steps are taken:
+
+If the character read is a letter, that letter is written onto the tape.
+If the character read is a digit (say d), the entire current tape is repeatedly written d-1 more times in total.
+Now for some encoded string S, and an index K, find and return the K-th letter (1 indexed) in the decoded string.
+
+Example 1:
+
+Input: S = "leet2code3", K = 10
+Output: "o"
+Explanation:
+The decoded string is "leetleetcodeleetleetcodeleetleetcode".
+The 10th letter in the string is "o".
+Example 2:
+
+Input: S = "ha22", K = 5
+Output: "h"
+Explanation:
+The decoded string is "hahahaha".  The 5th letter is "h".
+Example 3:
+
+Input: S = "a2345678999999999999999", K = 1
+Output: "a"
+Explanation:
+The decoded string is "a" repeated 8301530446056247680 times.  The 1st letter is "a".
+```
+
+```java
+public String decodeAtIndex(String s, int k) {
+    if (s == null || s.trim().length() == 0 || k <= 0) {
+        return null;
+    }
+
+    long count = 0;
+    int index = 0;
+    for (index = 0; index < s.length(); index++) {
+
+        char c = s.charAt(index);
+        if (c >= 'a' && c <= 'z') {
+            count++;
+        } else {
+            int d = c - 0x30;
+            count *= d;
+        }
+
+        if (count >= k) {
+            break;
+        }
+    }
+
+    return helper(s, index, k, count);
+}
+
+private String helper(String s, int index, long k, long count) {
+    char c = s.charAt(index);
+    if (c >= 'a' && c <= 'z') {
+        if (k == count) {
+            return String.valueOf(c);
+        }
+
+        count -= 1;
+        index -= 1;
+    } else {
+        int d = c - 0x30;
+        count /= d;
+        k = k % count == 0 ? count : k % count;
+        index -= 1;
+    }
+
+    return helper(s, index, k, count);
+}
+```
