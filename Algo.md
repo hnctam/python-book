@@ -694,6 +694,40 @@ void combine(int[] candidates, int i, List<Integer> list, int sum, int target) {
 }
 ```
 
+## Pow(x, n)
+
+```txt
+Implement pow(x, n), which calculates x raised to the power n (x^n).
+
+Example 1:
+
+Input: 2.00000, 10
+Output: 1024.00000
+Example 2:
+
+Input: 2.10000, 3
+Output: 9.26100
+Example 3:
+
+Input: 2.00000, -2
+Output: 0.25000
+Explanation: 2-2 = 1/22 = 1/4 = 0.25
+```
+
+```Java
+public double myPow(double x, int n) {
+    if (x == (double) 0) return 0;
+    if (x == (double) 1) return 1;
+    if (n == 0) return 1;
+    if (n < 0) {
+        return (1/x)*myPow(1/x, -n-1);
+    }
+    if (n == 1) return x;
+
+    return n % 2 == 0 ? myPow(x*x, n/2) : x*myPow(x*x, n/2);
+}
+```
+
 ## Add two number
 
 ```txt
@@ -926,6 +960,39 @@ int dfs(String s, int idx, StringBuilder sb, int num) {
 }
 ```
 
+## Container With Most Water
+
+```txt
+Given n non-negative integers a1, a2, ..., an , where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0). Find two lines, which together with x-axis forms a container, such that the container contains the most water.
+
+Note: You may not slant the container and n is at least 2.
+
+Example:
+
+Input: [1,8,6,2,5,4,8,3,7]
+Output: 49
+```
+
+![alt](https://s3-lc-upload.s3.amazonaws.com/uploads/2018/07/17/question_11.jpg)
+
+```java
+public int maxArea(int[] height) {
+    int maxArea =0;
+    int low =0;
+    int high=height.length-1;
+
+    while(low<high){
+        maxArea=Math.max(maxArea,(high-low)*Math.min(height[low],height[high]));
+
+        if(height[low]<height[high])
+            low++;
+            else
+                high--;
+    }
+    return maxArea;
+}
+```
+
 ## Decoded String at Index
 
 ```txt
@@ -999,5 +1066,133 @@ private String helper(String s, int index, long k, long count) {
     }
 
     return helper(s, index, k, count);
+}
+```
+
+## Decode Ways
+
+```txt
+A message containing letters from A-Z is being encoded to numbers using the following mapping:
+
+'A' -> 1
+'B' -> 2
+...
+'Z' -> 26
+Given a non-empty string containing only digits, determine the total number of ways to decode it.
+
+Example 1:
+
+Input: "12"
+Output: 2
+Explanation: It could be decoded as "AB" (1 2) or "L" (12).
+Example 2:
+
+Input: "226"
+Output: 3
+Explanation: It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
+```
+
+```Java
+public int numDecodings(String s) {
+    int dp2 = 1;
+    int dp1 = s.charAt(0) == '0' ? 0 : 1;   //first character
+
+    for (int i = 1; i < s.length(); i++) {
+        int dp = s.charAt(i) > '0' && s.charAt(i) <= '9' ? dp1 : 0;
+        if (s.charAt(i - 1) == '1') dp += dp2;
+        else if (s.charAt(i - 1) == '2' && s.charAt(i) <= '6') dp += dp2;
+
+        dp2 = dp1;
+        dp1 = dp;
+    }
+
+    return dp1;
+}
+```
+
+## Edit Distance
+
+```txt
+Given two strings str1 and str2 and below operations that can performed on str1. Find minimum number of edits (operations) required to convert ‘str1’ into ‘str2’.
+
+Insert
+Remove
+Replace
+All of the above operations are of equal cost.
+
+Examples:
+
+Input:   str1 = "geek", str2 = "gesek"
+Output:  1
+We can convert str1 into str2 by inserting a 's'.
+
+Input:   str1 = "cat", str2 = "cut"
+Output:  1
+We can convert str1 into str2 by replacing 'a' with 'u'.
+
+Input:   str1 = "sunday", str2 = "saturday"
+Output:  3
+Last three and first characters are same.  We basically
+need to convert "un" to "atur".  This can be done using
+below three operations.
+Replace 'n' with 'r', insert t, insert a
+```
+
+```java
+static int editDist(String str1, String str2, int m, int n)
+{
+    // If first string is empty, the only option is to
+    // insert all characters of second string into first
+    if (m == 0)
+        return n;
+
+    // If second string is empty, the only option is to
+    // remove all characters of first string
+    if (n == 0)
+        return m;
+
+    // If last characters of two strings are same, nothing
+    // much to do. Ignore last characters and get count for
+    // remaining strings.
+    if (str1.charAt(m - 1) == str2.charAt(n - 1))
+        return editDist(str1, str2, m - 1, n - 1);
+
+    // If last characters are not same, consider all three
+    // operations on last character of first string, recursively
+    // compute minimum cost for all three operations and take
+    // minimum of three values.
+    return 1 + min(editDist(str1, str2, m, n - 1), // Insert
+                    editDist(str1, str2, m - 1, n), // Remove
+                    editDist(str1, str2, m - 1, n - 1) // Replace
+                    );
+}
+```
+
+## Knapsack Problem
+
+```txt
+Given weights and values of n items, put these items in a knapsack of capacity W to get the maximum total value in the knapsack. In other words, given two integer arrays val[0..n-1] and wt[0..n-1] which represent values and weights associated with n items respectively. Also given an integer W which represents knapsack capacity, find out the maximum value subset of val[] such that sum of the weights of this subset is smaller than or equal to W. You cannot break an item, either pick the complete item, or don’t pick it (0-1 property).
+```
+
+![alt](https://www.geeksforgeeks.org/wp-content/uploads/knapsack-problem.png)
+
+```Java
+// Returns the maximum value that can be put in a knapsack of capacity W
+static int knapSack(int w, int wt[], int val[], int n) {
+    // Base Case
+    if (n == 0 || w == 0)
+        return 0;
+
+    // If weight of the nth item is more than Knapsack capacity W, then
+    // this item cannot be included in the optimal solution
+    if (wt[n-1] > w)
+        return knapSack(w, wt, val, n-1);
+
+    // Return the maximum of two cases:
+    // (1) nth item included
+    // (2) not included
+    else return max( val[n-1] + knapSack(w - wt[n-1], wt, val, n-1),
+                        knapSack(w, wt, val, n-1)
+                        );
 }
 ```
