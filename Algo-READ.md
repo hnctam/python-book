@@ -632,3 +632,205 @@ static int countWaysUtil(int n, int m) {
     return res[n-1];
 }
 ```
+## Minimum Swaps for Bracket Balancing
+```Java
+int minSwap(String s) {
+    int countSwap = 0;
+    char[] arr = s.toCharArray();
+    int countLeft = 0;
+    int countRight = 0;
+    int countUnbalance = 0;
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == '[') {
+            countLeft++;
+            if (countUnbalance > 0) {
+                countSwap += countUnbalance;
+                countUnbalance--;
+            }
+        } else if (arr[i] == ']'){
+            countRight ++;
+            countUnbalance = (countRight - countLeft);
+        }
+    }
+    return countSwap;
+}
+```
+
+## Decode String
+
+```java
+public String decodeString(String s) {
+    StringBuilder sb = new StringBuilder();
+    dfs(s, 0, sb, 0);
+    return sb.toString();
+}
+
+int dfs(String s, int idx, StringBuilder sb, int num) {
+    if (idx == s.length()) {
+        return idx;
+    }
+    char c = s.charAt(idx);
+    if (Character.isDigit(c)) {
+        num = 10 * num + (c - '0');
+        return dfs(s, idx + 1, sb, num);
+    } else if (c == '[') {
+        StringBuilder nestedSb = new StringBuilder();
+        int nextIdx = dfs(s, idx + 1, nestedSb, 0);
+        String nested = nestedSb.toString();
+        while (num-- > 0) {
+            sb.append(nested);
+        }
+        return dfs(s, nextIdx + 1, sb, 0);
+    } else if (s.charAt(idx) == ']') {
+        return idx;
+    } else {
+        sb.append(c);
+        return dfs(s, idx + 1, sb, 0);
+    }
+}
+```
+
+## Container With Most Water
+
+![alt](https://s3-lc-upload.s3.amazonaws.com/uploads/2018/07/17/question_11.jpg)
+
+```java
+public int maxArea(int[] height) {
+    int maxArea =0;
+    int low =0;
+    int high=height.length-1;
+
+    while(low<high){
+        maxArea=Math.max(maxArea,(high-low)*Math.min(height[low],height[high]));
+
+        if(height[low]<height[high])
+            low++;
+            else
+                high--;
+    }
+    return maxArea;
+}
+```
+
+## Decoded String at Index
+
+```java
+public String decodeAtIndex(String s, int k) {
+    if (s == null || s.trim().length() == 0 || k <= 0) {
+        return null;
+    }
+
+    long count = 0;
+    int index = 0;
+    for (index = 0; index < s.length(); index++) {
+
+        char c = s.charAt(index);
+        if (c >= 'a' && c <= 'z') {
+            count++;
+        } else {
+            int d = c - 0x30;
+            count *= d;
+        }
+
+        if (count >= k) {
+            break;
+        }
+    }
+
+    return helper(s, index, k, count);
+}
+
+private String helper(String s, int index, long k, long count) {
+    char c = s.charAt(index);
+    if (c >= 'a' && c <= 'z') {
+        if (k == count) {
+            return String.valueOf(c);
+        }
+
+        count -= 1;
+        index -= 1;
+    } else {
+        int d = c - 0x30;
+        count /= d;
+        k = k % count == 0 ? count : k % count;
+        index -= 1;
+    }
+
+    return helper(s, index, k, count);
+}
+```
+
+## Decode Ways
+
+```Java
+public int numDecodings(String s) {
+    int dp2 = 1;
+    int dp1 = s.charAt(0) == '0' ? 0 : 1;   //first character
+
+    for (int i = 1; i < s.length(); i++) {
+        int dp = s.charAt(i) > '0' && s.charAt(i) <= '9' ? dp1 : 0;
+        if (s.charAt(i - 1) == '1') dp += dp2;
+        else if (s.charAt(i - 1) == '2' && s.charAt(i) <= '6') dp += dp2;
+
+        dp2 = dp1;
+        dp1 = dp;
+    }
+
+    return dp1;
+}
+```
+
+## Edit Distance
+
+```java
+static int editDist(String str1, String str2, int m, int n)
+{
+    // If first string is empty, the only option is to
+    // insert all characters of second string into first
+    if (m == 0)
+        return n;
+
+    // If second string is empty, the only option is to
+    // remove all characters of first string
+    if (n == 0)
+        return m;
+
+    // If last characters of two strings are same, nothing
+    // much to do. Ignore last characters and get count for
+    // remaining strings.
+    if (str1.charAt(m - 1) == str2.charAt(n - 1))
+        return editDist(str1, str2, m - 1, n - 1);
+
+    // If last characters are not same, consider all three
+    // operations on last character of first string, recursively
+    // compute minimum cost for all three operations and take
+    // minimum of three values.
+    return 1 + min(editDist(str1, str2, m, n - 1), // Insert
+                    editDist(str1, str2, m - 1, n), // Remove
+                    editDist(str1, str2, m - 1, n - 1) // Replace
+                    );
+}
+```
+
+## Knapsack Problem
+
+```Java
+// Returns the maximum value that can be put in a knapsack of capacity W
+static int knapSack(int w, int wt[], int val[], int n) {
+    // Base Case
+    if (n == 0 || w == 0)
+        return 0;
+
+    // If weight of the nth item is more than Knapsack capacity W, then
+    // this item cannot be included in the optimal solution
+    if (wt[n-1] > w)
+        return knapSack(w, wt, val, n-1);
+
+    // Return the maximum of two cases:
+    // (1) nth item included
+    // (2) not included
+    else return max( val[n-1] + knapSack(w - wt[n-1], wt, val, n-1),
+                        knapSack(w, wt, val, n-1)
+                        );
+}
+```

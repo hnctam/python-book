@@ -910,6 +910,48 @@ static int countWaysUtil(int n, int m) {
 }
 ```
 
+## Minimum Swaps for Bracket Balancing
+
+```txt
+You are given a string of 2N characters consisting of N ‘[‘ brackets and N ‘]’ brackets. A string is considered balanced if it can be represented in the for S2[S1] where S1 and S2 are balanced strings. We can make an unbalanced string balanced by swapping adjacent characters. Calculate the minimum number of swaps necessary to make a string balanced.
+
+Examples:
+
+Input  : []][][
+Output : 2
+First swap: Position 3 and 4
+[][]][
+Second swap: Position 5 and 6
+[][][]
+
+Input  : [[][]]
+Output : 0
+String is already balanced.
+```
+
+```Java
+int minSwap(String s) {
+    int countSwap = 0;
+    char[] arr = s.toCharArray();
+    int countLeft = 0;
+    int countRight = 0;
+    int countUnbalance = 0;
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == '[') {
+            countLeft++;
+            if (countUnbalance > 0) {
+                countSwap += countUnbalance;
+                countUnbalance--;
+            }
+        } else if (arr[i] == ']'){
+            countRight ++;
+            countUnbalance = (countRight - countLeft);
+        }
+    }
+    return countSwap;
+}
+```
+
 ## Decode String
 
 ```txt
